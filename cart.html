@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmer Portal - Apple Cart</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #eaf7e1;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #27a236;
+        }
+
+        .item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .item img {
+            width: 100px;
+            border-radius: 8px;
+            border: 2px solid #27a236;
+        }
+
+        .item-details {
+            flex: 1;
+            margin-left: 20px;
+        }
+
+        .item-details h3 {
+            margin: 0;
+            color: #333;
+        }
+
+        .item-details p {
+            margin: 5px 0;
+            color: #555;
+        }
+
+        input[type="number"] {
+            width: 60px;
+            padding: 5px;
+        }
+
+        button {
+            padding: 10px 15px;
+            background-color: #27a236;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #1e7d2a;
+        }
+
+        .cart {
+            margin-top: 30px;
+        }
+
+        .cart h3 {
+            text-align: center;
+            color: #27a236;
+        }
+
+        .cart-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .cart-list li {
+            background: #f1f1f1;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+
+        .total {
+            text-align: center;
+            font-size: 20px;
+            margin-top: 20px;
+            color: #333;
+        }
+
+        .actions {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .actions button {
+            margin: 0 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Farmer Portal - Apple Cart</h2>
+
+        <div class="item">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/1/15/Red_Apple.jpg" alt="Apple">
+            <div class="item-details">
+                <h3>Fresh Apples</h3>
+                <p>Price: ₹100 per kg</p>
+                <label for="appleQty">Quantity (kg): </label>
+                <input type="number" id="appleQty" min="1" value="1">
+            </div>
+            <button onclick="addToCart()">Add to Cart</button>
+        </div>
+
+        <div class="cart">
+            <h3>Your Cart</h3>
+            <ul class="cart-list" id="cartList"></ul>
+            <div class="total">Grand Total: ₹<span id="grandTotal">0</span></div>
+        </div>
+
+        <div class="actions">
+            <button class="btn" onclick="window.location.href='contract.html'">Create Contract</button>
+            <button onclick="messageFarmer()">Message Farmer</button>
+        </div>
+    </div>
+
+    <script>
+        let cart = [];
+        const pricePerKg = 100;
+
+        function addToCart() {
+            const qty = parseInt(document.getElementById('appleQty').value);
+            const total = qty * pricePerKg;
+
+            cart.push({ item: 'Fresh Apples', qty, total });
+
+            renderCart();
+        }
+
+        function renderCart() {
+            const cartList = document.getElementById('cartList');
+            cartList.innerHTML = '';
+
+            let grandTotal = 0;
+            cart.forEach((item) => {
+                const li = document.createElement('li');
+                li.textContent = `${item.item} - ${item.qty} kg - ₹${item.total}`;
+                cartList.appendChild(li);
+                grandTotal += item.total;
+            });
+
+            document.getElementById('grandTotal').textContent = grandTotal;
+        }
+
+        function generateContract() {
+            alert('Contract generated successfully!');
+        }
+
+        function messageFarmer() {
+            const message = prompt('Enter your message to the farmer:');
+            if (message) {
+                alert('Message sent to the farmer: ' + message);
+            }
+        }
+    </script>
+</body>
+</html>

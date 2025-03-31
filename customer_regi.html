@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmer Details Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url('image.png') no-repeat center center fixed;
+    
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .form-container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px 0px #000;
+            max-width: 400px;
+            width: 100%;
+        }
+        h2 {
+            text-align: center;
+        }
+        label {
+            font-weight: bold;
+        }
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #218838;
+        }
+    </style>
+</head>
+<body >
+    <img src="" alt="">
+    <div class="form-container">
+        <h2>Welcome! Kindly enter your details</h2>
+        <form>
+            <label>Full Name:</label>
+            <input type="text" name="fullname" required>
+            
+            <label>State:</label>
+            <input type="text" name="state" required>
+            
+         
+            
+            <label>Postal Code:</label>
+            <input type="text" name="postalcode" required>
+            
+            <label>Address:</label>
+            <input type="text" name="address" required>
+            
+            <label>Aadhaar Number:</label>
+            <input type="text" name="aadhaar" required>
+            
+            
+            <label>Phone Number:</label>
+            <input type="text" name="phone" placeholder="+91 XXXXXXXXXX" required>
+            
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</body>
+</html>

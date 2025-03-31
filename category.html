@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmer Portal</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            background: #e6f4ea; 
+            color: #3a3a3a;
+        }
+
+        .navbar { 
+            background: #3c803d; 
+            padding: 15px; 
+            display: flex; 
+            justify-content: space-around; 
+            border-bottom: 3px solid #2c5c2d;
+        }
+
+        .navbar a { 
+            color: white; 
+            text-decoration: none; 
+            font-size: 18px; 
+        }
+
+        .category { 
+            margin: 40px; 
+        }
+
+        .category h2 { 
+            margin-left: 20px; 
+            color: #2c5c2d;
+        }
+
+        .slider-container { 
+            overflow-x: auto; 
+            white-space: nowrap; 
+            padding: 20px; 
+            position: relative;
+            background: #c8e6c9;
+            border-radius: 20px;
+            scrollbar-width: none; /* Hide scrollbar for Firefox */
+            -ms-overflow-style: none; /* Hide scrollbar for IE and Edge */
+        }
+
+        .slider-container::-webkit-scrollbar { 
+            display: none; /* Hide scrollbar for Chrome, Safari, and Opera */
+        }
+
+        .slider { 
+            display: flex; 
+            gap: 20px;
+        }
+
+        .item { 
+            width: 160px; 
+            height: 160px;
+            color: black;
+            font-size: 1.2em;
+            padding: 10px; 
+            border-radius: 50%; 
+            text-align: center; 
+            cursor: pointer; 
+            transition: transform 0.3s ease-in-out;
+            background: #f1f8e9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .item img { 
+            width: 120px; 
+            height: 120px; 
+            border-radius: 50%;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .item:hover img {
+            transform: scale(1.2);
+        }
+
+        .grains-container {
+            display: flex;
+            justify-content: center; 
+            gap: 40px;
+            margin: 40px;
+        }
+
+        .grains-container .category {
+            width: 20%; 
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <a href="#fruits">Fruits</a>
+        <a href="#vegetables">Vegetables</a>
+        <a href="#grains">Grains</a>
+    </div>
+
+    <div class="category" id="fruits">
+        <h2>Fruits</h2>
+        
+        <div class="slider-container">
+            
+            <div class="slider">
+                <a href="buyer_portal.html"> <div class="item"><img src="images\apple.jpg" alt="Apple"><p>Apple</p></div>  </a>
+                <a href="buyer_portal.html"><div class="item"><img src="images\bana.jpg" alt="Banana"><p>Banana</p></div></a>
+                    <a href="buyer_portal.html"><div class="item"><img src="images\m1.jpg" alt="Mango"><p>Mango</p></div></a>
+                        <a href="buyer_portal.html"> <div class="item"><img src="images\g1.jpg" alt="Grapes" h><p>Grapes</p></div></a>
+                            <a href="buyer_portal.html">    <div class="item"><img src="images\o1.jpg" alt="Orange"><p>Orange</p></div></a>
+                                <a href="buyer_portal.html"> <div class="item"><img src="images\pin.jpg" alt="Pineapple"><p>Pineapple</p></div></a>
+                                    <a href="buyer_portal.html">    <div class="item"><img src="images\str.jpg" alt="Strawberry"><p>Strawberry</p></div></a>
+                                        <a href="buyer_portal.html">    <div class="item"><img src="images\wat.jpg" alt="Watermelon"><p>Watermelon</p></div></a>
+            </div>
+      
+        </div>
+    
+    </div>
+    
+    <div class="category" id="vegetables">
+        <h2>Vegetables</h2>
+        <div class="slider-container">
+            <div class="slider">
+                <a href="buyer_portal.html"><div class="item"><img src="images\ca.jpg" alt="Carrot"><p>Carrot</p></div> </a>
+                <a href="buyer_portal.html"><div class="item"><img src="images\tom.jpg" alt="Tomato"><p>Tomato</p></div> </a>
+                <a href="buyer_portal.html"><div class="item"><img src="images\pot.jpg" alt="Potato"><p>Potato</p></div> </a>
+                <a href="buyer_portal.html"><div class="item"><img src="images\onion.jpg" alt="Onion"><p>Onion</p></div> </a>
+                <a href="buyer_portal.html"><div class="item"><img src="images\spin.jpg" alt="Spinach"><p>Spinach</p></div> </a>
+                <a href="buyer_portal.html"><div class="item"><img src="images\cum.jpg" alt="Cucumber"><p>Cucumber</p></div> </a>
+                <a href="buyer_portal.html"><div class="item"><img src="images\broc.jpg" alt="Broccoli"><p>Broccoli</p></div> </a>
+                <a href="buyer_portal.html"><div class="item"><img src="images\cap.jpg" alt="Capsicum"><p>Capsicum</p></div> </a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="grains-container" id="grains">
+        <div class="category" id="wheat">
+            <h2>Wheat</h2>
+           <a href="buyer_portal.html"> <div class="item"><img src="images\durum.jpg" alt="Wheat"><p>Durum Wheat</p></div></a>
+        </div>
+        <div class="category" id="rice">
+            <h2>Rice</h2>
+            <a href="buyer_portal.html"> <div class="item"><img src="images\basmati.jpg" alt="Basmati Rice"><p>Basmati Rice</p></div></a>
+        </div>
+        <div class="category" id="pulses">
+            <h2>Pulses</h2>
+            <a href="buyer_portal.html"> <div class="item"><img src="images\pulse.png" alt="Pulses"><p>Pulses</p></div></a>
+        </div>
+    </div>
+
+</body>
+</html>

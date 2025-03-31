@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmer's Portal</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px;
+            background: #2e7d32;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+        }
+
+        .main-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 50px;
+            flex-direction: row;
+            background: white;
+            position: relative;
+            z-index:-1;
+        }
+
+        .text-container {
+            width: 40%;
+            text-align: left;
+            position: relative;
+            z-index: 1;
+        }
+
+        .text-container h1, .text-container p {
+            color: yellow; 
+        }
+
+        .slideshow-container {
+            width: 650px;
+            height: 650px;
+            border-radius: 70%;
+            overflow: hidden;
+            position: relative;
+            border: 5px solid #fff;
+        }
+
+        .slideshow-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+        .login-btn {
+            background-color: #2d6a2d;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .login-btn:hover {
+            background-color: #238623;
+        }
+
+        /* Popup background */
+        .popup-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    visibility: hidden;
+    opacity: 0;
+    transition: 0.3s ease-in-out;
+    z-index: 1000; /* Ensuring it stays on top */
+}
+
+.popup-container.show {
+    visibility: visible;
+    opacity: 1;
+}
+
+.popup-box {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 128, 0, 0.2);
+    text-align: center;
+    width: 320px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    margin-top: 20%;
+    margin-left: 40%;
+}
+    
+
+        .popup-box h2 {
+            color: #2d6a2d;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            margin: 15px 0;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: bold;
+            color: #2d6a2d;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #2d6a2d;
+            border-radius: 5px;
+            margin-top: 5px;
+            outline: none;
+        }
+
+        .submit-btn {
+            background-color: #2d6a2d;
+            color: black;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            background-color: #238623;
+        }
+
+        /* Close button */
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 20px;
+            cursor: pointer;
+            color: #333;
+        }
+
+        .close-btn:hover {
+            color: red;
+        }
+        .button {
+            background: #ffeb3b;
+            color: #333;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            position: relative;
+        }
+
+        /* Dropdown container */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        /* Dropdown content */
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 180px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            z-index: 10;
+            right: 0;
+        }
+
+        .dropdown-content a {
+            color: #333;
+            padding: 10px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Show dropdown when button is clicked */
+        .show {
+            display: block;
+        }
+        .section {
+            padding: 50px;
+            text-align: center;
+            background: #e8f5e9;
+        }
+
+        .grid-container {
+            display: flex;
+            gap: 70px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .grid-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            width: 150px;
+        }
+
+        .grid-item img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 20px;
+            transition: transform 0.5s ease-in-out;
+            border: 3px solid #2e7d32;
+        }
+
+        .grid-item img:hover {
+            transform: scale(1.1);
+        }
+
+        footer {
+            background: #1b5e20;
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div>
+            <a href="#">Farmer's Portal</a>
+            <a href="category.html">Categories</a>
+            <a href="#market">Market</a>
+            <a href="#resources">Resources</a>
+            <a href="about_us_section.html">About Us</a>
+        </div>
+        <div>
+            <button class="login-btn" onclick="showPopup()">Login</button>
+            <div class="popup-container" id="loginPopup">
+                <div class="popup-box">
+                    <span class="close-btn" onclick="hidePopup()">&times;</span>
+                    <h2>Login</h2>
+                    <form action="#" method="POST">
+                        <div class="input-group">
+                            <label for="username">Username</label>
+                            <input type="text" id="username" name="username" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" name="password" required>
+                        </div>
+                        <button type="submit" class="submit-btn">Login</button>
+                    </form>
+                </div>
+            </div>
+            <!-- Dropdown for Register -->
+            <div class="dropdown">
+                <button class="button" id="registerBtn">Register</button>
+                <div class="dropdown-content" id="registerDropdown">
+                    <a href="farmer_reg.html">Register as Farmer</a>
+                    <a href="customer_regi.html">Register as Customer</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <div class="slideshow-container">
+            <img src="fe1.jpg" class="slide" style="opacity:1;">
+            <img src="fe2.jpg" class="slide">
+            <img src="ff4.jpg" class="slide">
+        </div>
+        <div class="text-container">
+            <h1>Welcome to Modern Farming</h1>
+            <p>Discover sustainable farming practices, connect with experts, and grow your agricultural business with cutting-edge resources and tools.</p>
+            <button class="button">Explore Resources</button>
+            <button class="button">Learn More</button>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Popular Crops</h2>
+        <div class="grid-container">
+            <div class="grid-item"><img src="barley.jpg" alt="Wheat"><p>Wheat</p></div>
+            <div class="grid-item"><img src="basmati.jpg" alt="Rice"><p>Rice</p></div>
+            <div class="grid-item"><img src="pulses.jpg" alt="Pulses"><p>Pulses</p></div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Latest Resources</h2>
+        <div class="grid-container">
+            <div class="grid-item"><img src="planting.jpg" alt="Planting"><p>Best Practices</p></div>
+            <div class="grid-item"><img src="traditional.jpg" alt="Traditional Methods"><p>Traditional Methods</p></div>
+            <div class="grid-item"><img src="wildlife.jpg" alt="Wildlife & Farming"><p>Wildlife & Farming</p></div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Farmer's Portal. All rights reserved.</p>
+    </footer>
+
+    <script>
+        let index = 0;
+        const slides = document.querySelectorAll(".slide");
+        
+        function showSlides() {
+            slides.forEach((slide, i) => {
+                slide.style.opacity = (i === index) ? "1" : "0";
+            });
+            index = (index + 1) % slides.length;
+        }
+        setInterval(showSlides, 3000);
+
+        document.getElementById("registerBtn").addEventListener("click", function() {
+            document.getElementById("registerDropdown").classList.toggle("show");
+        });
+
+        // Close dropdown when clicking outside
+        window.onclick = function(event) {
+            if (!event.target.matches('#registerBtn')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    if (dropdowns[i].classList.contains('show')) {
+                        dropdowns[i].classList.remove('show');
+                    }
+                }
+            }
+        };
+
+        function showPopup() {
+    document.getElementById("loginPopup").classList.add("show");
+}
+
+function hidePopup() {
+    document.getElementById("loginPopup").classList.remove("show");
+}
+
+    </script>
+</body>
+</html>

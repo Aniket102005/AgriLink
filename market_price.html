@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Today's Vegetable Market Rates</title>
+    <meta name="description" content="Get the latest mandi prices for vegetables and commodities with real-time updates. Check today’s market rates for RMC vegetables and stay informed on price trends in your local area.">
+    <meta name="keywords" content="vegetable price, vegetables price today, vegetable price in india, vegetable rate today">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" sizes="16x16">
+    <style>
+        body {
+            font-family: 'Georgia', serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f7f0; /* Light green background */
+            color: #1a3c1a; /* Dark green for text */
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+        .header {
+            background-color: #2e7d32; /* Bright green */
+            color: #fff;
+            padding: 1.5rem;
+            font-size: 2rem;
+            font-weight: bold;
+            text-align: center;
+            border-bottom: 4px solid #1b5e20; /* Darker green border */
+            background-image: linear-gradient(to bottom, #2e7d32, #1b5e20); /* Green gradient */
+        }
+        .subtext, .total-entries {
+            color: #1b5e20; /* Darker green */
+            font-size: 0.95rem;
+            margin-bottom: 0.75rem;
+        }
+        .filters {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin: 1.5rem 0;
+            align-items: center;
+            background-color: #e8f5e9; /* Very light green */
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .filter-select, .search-input {
+            padding: 0.6rem;
+            border: 2px solid #1b5e20; /* Dark green border */
+            border-radius: 6px;
+            font-size: 1rem;
+            background-color: #fff;
+            transition: border-color 0.3s ease;
+        }
+        .filter-select:focus, .search-input:focus {
+            border-color: #4caf50; /* Lighter green on focus */
+            outline: none;
+        }
+        .filter-select {
+            width: 220px;
+        }
+        .search-input {
+            width: 250px;
+            background-image: url('https://img.icons8.com/ios-filled/20/1b5e20/search.png'); /* Dark green search icon */
+            background-repeat: no-repeat;
+            background-position: 10px center;
+            padding-left: 35px;
+        }
+        .table-container {
+            overflow-x: auto;
+            max-height: 600px;
+            margin-top: 1.5rem;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fff;
+        }
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #c8e6c9; /* Light green line */
+        }
+        th {
+            background-color: #4caf50; /* Medium bright green */
+            color: #fff;
+            font-weight: bold;
+            position: sticky;
+            top: 0;
+        }
+        td {
+            vertical-align: middle;
+        }
+        tr:nth-child(even) {
+            background-color: #f1f8e9; /* Very light green for alternating rows */
+        }
+        tr:hover {
+            background-color: #e8f5e9; /* Light green on hover */
+        }
+        .commodity-icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 0.75rem;
+            vertical-align: middle;
+        }
+        footer {
+            border-top: 2px solid #c8e6c9; /* Light green border */
+            padding: 2rem 0;
+            background-color: #2e7d32; /* Bright green footer */
+            color: #fff;
+            margin-top: 2rem;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+        .footer h3, .footer h4 {
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+        .footer ul {
+            list-style: none;
+            padding: 0;
+        }
+        .footer a {
+            color: #c8e6c9; /* Light green links */
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .footer a:hover {
+            color: #fff; /* White on hover */
+        }
+        .no-data {
+            text-align: center;
+            padding: 1.5rem;
+            color: #1b5e20; /* Dark green */
+            font-style: italic;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://www.transparenttextures.com/patterns/paper-fibers.png cram)');
+            opacity: 0.05;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">Current Daily Price of Various Commodities</div>
+       
+        <div class="filters">
+            <input type="text" placeholder="Search commodities, markets..." class="search-input" id="search">
+            <select class="filter-select" id="priceUnit">
+                <option value="">Price Unit</option>
+                <option value="kg">Per Kg</option>
+                <option value="ton">Per Ton</option>
+            </select>
+            <select class="filter-select" id="state">
+                <option value=''>All States</option>
+                <option value="andhra-pradesh">Andhra Pradesh</option>
+                <option value="arunachal-pradesh">Arunachal Pradesh</option>
+                <option value="assam">Assam</option>
+                <option value="bihar">Bihar</option>
+                <option value="chhattisgarh">Chhattisgarh</option>
+                <option value="goa">Goa</option>
+                <option value="gujarat">Gujarat</option>
+                <option value="haryana">Haryana</option>
+                <option value="himachal-pradesh">Himachal Pradesh</option>
+                <option value="jammu-and-kashmir">Jammu and Kashmir</option>
+                <option value="jharkhand">Jharkhand</option>
+                <option value="karnataka">Karnataka</option>
+                <option value="kerala">Kerala</option>
+                <option value="madhya-pradesh">Madhya Pradesh</option>
+                <option value="maharashtra">Maharashtra</option>
+                <option value="manipur">Manipur</option>
+                <option value="meghalaya">Meghalaya</option>
+                <option value="mizoram">Mizoram</option>
+                <option value="nagaland">Nagaland</option>
+                <option value="odisha">Odisha</option>
+                <option value="punjab">Punjab</option>
+                <option value="rajasthan">Rajasthan</option>
+                <option value="sikkim">Sikkim</option>
+                <option value="tamil-nadu">Tamil Nadu</option>
+                <option value="telangana">Telangana</option>
+                <option value="tripura">Tripura</option>
+                <option value="uttar-pradesh">Uttar Pradesh</option>
+                <option value="uttarakhand">Uttarakhand</option>
+                <option value="west-bengal">West Bengal</option>
+                <option value="andaman-and-nicobar-islands">Andaman and Nicobar Islands</option>
+                <option value="chandigarh">Chandigarh</option>
+                <option value="dadra-and-nagar-haveli-and-daman-and-diu">Dadra and Nagar Haveli and Daman and Diu</option>
+                <option value="delhi">Delhi</option>
+                <option value="lakshadweep">Lakshadweep</option>
+                <option value="puducherry">Puducherry</option>
+            </select>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>State</th>
+                        <th>District</th>
+                        <th>Market</th>
+                        <th>Commodity</th>
+                        <th>Variety</th>
+                        <th>Grade</th>
+                        <th>Arrival Date</th>
+                        <th>Min Price</th>
+                        <th>Max Price</th>
+                        <th>Modal Price</th>
+                    </tr>
+                </thead>
+                <tbody id="table-body">
+                    <!-- Table data will be dynamically populated here -->
+                </tbody>
+            </table>
+            <div class="no-data" id="no-data-message">No data available for the selected filters.</div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <h3>Mandi Prices</h3>
+                    <p>Your trusted source for daily agricultural commodity prices across India.</p>
+                </div>
+                <div>
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/markets">Markets</a></li>
+                        <li><a href="/commodities">Commodities</a></li>
+                        <li><a href="/about">About</a></li>
+                        <li><a href="/contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="/faq">FAQ</a></li>
+                        <li><a href="/terms">Terms of Service</a></li>
+                        <li><a href="/privacy">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Connect With Us</h4>
+                    <div class="social-links">
+                        <a href="#">Facebook</a>
+                        <a href="#">Twitter</a>
+                        <a href="#">Instagram</a>
+                        <a href="#">Email</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2025 Mandi Prices. All rights reserved.</p>
+                <div>
+                    <a href="/terms">Terms</a>
+                    <a href="/privacy">Privacy</a>
+                    <a href="/cookies">Cookies</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Expanded commodity data including additional states
+        const commodityData = [
+            // Andhra Pradesh - Chittoor
+            { state: "andhra-pradesh", district: "chittoor", market: "mulakalacheruvu", commodity: "tomato", variety: "Local", grade: "FAQ", arrivalDate: "21/02/2025", minPrice: "11.00", maxPrice: "14.00", modalPrice: "13.00" },
+            { state: "andhra-pradesh", district: "chittoor", market: "palamaner", commodity: "cabbage", variety: "Cabbage", grade: "FAQ", arrivalDate: "21/02/2025", minPrice: "400.00", maxPrice: "800.00", modalPrice: "600.00" },
+            { state: "andhra-pradesh", district: "chittoor", market: "palamaner", commodity: "green-chilli", variety: "Green Chilly", grade: "FAQ", arrivalDate: "21/02/2025", minPrice: "25.00", maxPrice: "35.00", modalPrice: "30.00" },
+            { state: "andhra-pradesh", district: "chittoor", market: "vepanjari", commodity: "gur-jaggery", variety: "Achhu", grade: "FAQ", arrivalDate: "21/02/2025", minPrice: "25.00", maxPrice: "30.00", modalPrice: "27.00" },
+
+            // Andhra Pradesh - East Godavari
+            { state: "andhra-pradesh", district: "east-godavari", market: "rajahmundry", commodity: "papaya", variety: "Other", grade: "Medium", arrivalDate: "21/02/2025", minPrice: "20.00", maxPrice: "30.00", modalPrice: "25.00" },
+            { state: "andhra-pradesh", district: "east-godavari", market: "ravulapalem", commodity: "banana", variety: "Bhushavali(Pacha)", grade: "Large", arrivalDate: "21/02/2025", minPrice: "16.00", maxPrice: "21.00", modalPrice: "18.00" },
+            { state: "andhra-pradesh", district: "east-godavari", market: "ravulapalem", commodity: "banana", variety: "Chakkarakeli(Red)", grade: "Large", arrivalDate: "21/02/2025", minPrice: "26.00", maxPrice: "39.00", modalPrice: "37.00" },
+
+            // Andhra Pradesh - Krishna
+            { state: "andhra-pradesh", district: "krishna", market: "myalavaram", commodity: "paddy", variety: "B P T (Common)", grade: "FAQ", arrivalDate: "21/02/2025", minPrice: "23.50", maxPrice: "27.00", modalPrice: "25.00" },
+            { state: "andhra-pradesh", district: "krishna", market: "tiruvuru", commodity: "cotton", variety: "Bunny", grade: "FAQ", arrivalDate: "21/02/2025", minPrice: "73.00", maxPrice: "73.80", modalPrice: "73.40" },
+            { state: "andhra-pradesh", district: "krishna", market: "tiruvuru", commodity: "maize", variety: "Hybrid/Local", grade: "FAQ", arrivalDate: "21/02/2025", minPrice: "23.00", maxPrice: "24.00", modalPrice: "23.50" },
+
+            // Arunachal Pradesh - Papum Pare
+            { state: "arunachal-pradesh", district: "papum-pare", market: "itanagar", commodity: "orange", variety: "Local", grade: "A", arrivalDate: "21/02/2025", minPrice: "30.00", maxPrice: "40.00", modalPrice: "35.00" },
+            { state: "arunachal-pradesh", district: "papum-pare", market: "itanagar", commodity: "pineapple", variety: "Queen", grade: "Medium", arrivalDate: "21/02/2025", minPrice: "25.00", maxPrice: "35.00", modalPrice: "30.00" },
+            { state: "arunachal-pradesh", district: "papum-pare", market: "naharlagun", commodity: "ginger", variety: "Local", grade: "FAQ", arrivalDate: "21/02/2025", minPrice: "20.00", maxPrice: "28.00", modalPrice: "24.00" },
+
+            // Arunachal Pradesh - Lower Subansiri
+            { state: "arunachal-pradesh", district: "lower-subansiri", market: "ziro", commodity: "banana", variety: "Local", grade: "Large", arrivalDate: "21/02/2025", minPrice: "15.00", maxPrice: "22.00", modalPrice: "18.00" },
+            { state: "arunachal-pradesh", district: "lower-subansiri", market: "ziro", commodity: "mango", variety: "Local", grade: "A", arrivalDate: "21/02/2025", minPrice: "40.00", maxPrice: "50.00", modalPrice: "45.00" },
+            { state: "arunachal-pradesh", district: "lower-subansiri", market: "daporijo", commodity: "rice", variety: "Local", grade: "FAQ", arrivalDate: "21/02/2025", minPrice: "25.00", maxPrice: "35.00", modalPrice: "30.00" },
+
+            // Arunachal Pradesh - West Kameng
+            { state: "arunachal-pradesh", district: "west-kameng", market: "bomdila", commodity: "apple", variety: "Local", grade: "A", arrivalDate: "21/02/2025", minPrice: "50.00", maxPrice: "70.00", modalPrice: "60.00" },
+            { state: "arunachal-pradesh", district: "west-kameng", market: "bomdila", commodity: "potato", variety: "Local", grade: "FAQ", arrivalDate: "21/02/2025", minPrice: "15.00", maxPrice: "25.00", modalPrice: "20.00" },
+            { state: "arunachal-pradesh", district: "west-kameng", market: "dirang", commodity: "ginger", variety: "Local", grade: "Medium", arrivalDate: "21/02/2025", minPrice: "22.00", maxPrice: "30.00", modalPrice: "26.00" },
+
+            // Assam - Kamrup
+            { state: "assam", district: "kamrup", market: "guwahati", commodity: "tea", variety: "Assam CTC", grade: "A", arrivalDate: "21/02/2025", minPrice: "150.00", maxPrice: "200.00", modalPrice: "175.00" },
+            { state: "assam", district: "kamrup", market: "guwahati", commodity: "rice", variety: "Local", grade: "FAQ", arrivalDate: "21/02/2025", minPrice: "20.00", maxPrice: "30.00", modalPrice: "25.00" },
+            { state: "assam", district: "kamrup", market: "jogighopa", commodity: "banana", variety: "Local", grade: "Large", arrivalDate: "21/02/2025", minPrice: "10.00", maxPrice: "18.00", modalPrice: "14.00" },
+
+            // Assam - Nagaon
+            { state: "assam", district: "nagaon", market: "nagaon", commodity: "mango", variety: "Local", grade: "A", arrivalDate: "21/02/2025", minPrice: "35.00", maxPrice: "45.00", modalPrice: "40.00" },
+            { state: "assam", district: "nagaon", market: "nagaon", commodity: "potato", variety: "Local", grade: "FAQ", arrivalDate: "21/02/2025", minPrice: "15.00", maxPrice: "22.00", modalPrice: "18.00" },
+            { state: "assam", district: "nagaon", market: "hojai", commodity: "ginger", variety: "Local", grade: "Medium", arrivalDate: "21/02/2025", minPrice: "18.00", maxPrice: "26.00", modalPrice: "22.00" },
+
+            // Assam - Jorhat
+            { state: "assam", district: "jorhat", market: "jorhat", commodity: "orange", variety: "Local", grade: "A", arrivalDate: "21/02/2025", minPrice: "25.00", maxPrice: "35.00", modalPrice: "30.00" },
+            { state: "assam", district: "jorhat", market: "jorhat", commodity: "tea", variety: "Orthodox", grade: "A", arrivalDate: "21/02/2025", minPrice: "180.00", maxPrice: "250.00", modalPrice: "215.00" },
+            { state: "assam", district: "jorhat", market: "teok", commodity: "rice", variety: "Local", grade: "FAQ", arrivalDate: "21/02/2025", minPrice: "22.00", maxPrice: "32.00", modalPrice: "27.00" },
+
+            // Bihar - Patna
+            { state: "bihar", district: "patna", market: "patna", commodity: "wheat", variety: "Local", grade: "FAQ", arrivalDate: "21/02/2025", minPrice: "22.00", maxPrice: "28.00", modalPrice: "25.00" },
+            { state: "bihar", district: "patna", market: "bikramganj", commodity: "potato", variety: "Local", grade: "Medium", arrivalDate: "21/02/2025", minPrice: "12.00", maxPrice: "18.00", modalPrice: "15.00" },
+            { state: "bihar", district: "patna", market: "hajipur", commodity: "onion", variety: "Local", grade: "FAQ", arrivalDate: "21/02/2025", minPrice: "20.00", maxPrice: "30.00", modalPrice: "25.00" },
+
+            // Bihar - Gaya
+            { state: "bihar", district: "gaya", market: "gaya", commodity: "rice", variety: "Local", grade: "FAQ", arrivalDate: "21/02/2025", minPrice: "25.00", maxPrice: "35.00", modalPrice: "30.00" },
+            { state: "bihar", district: "gaya", market: "sherghati", commodity: "cauliflower", variety: "Local", grade: "Medium", arrivalDate: "21/02/2025", minPrice: "15.00", maxPrice: "25.00", modalPrice: "20.00" },
+            { state: "bihar", district: "gaya", market: "tehta", commodity: "brinjal", variety: "Local", grade: "FAQ", arrivalDate: "21/02/2025", minPrice: "10.00", maxPrice: "15.00", modalPrice: "12.00" },
+
+            // Chhattisgarh - Raipur
+            { state: "chhattisgarh", district: "raipur", market: "raipur", commodity: "paddy", variety: "Local", grade: "FAQ", arrivalDate: "21/02/2025", minPrice: "20.00", maxPrice: "25.00", modalPrice: "22.50" },
+            { state: "chhattisgarh", district: "raipur", market: "abhanpur", commodity: "tomato", variety: "Local", grade: "Medium", arrivalDate: "21/02/2025", minPrice: "15.00", maxPrice: "20.00", modalPrice: "17.50" },
+            { state: "chhattisgarh", district: "raipur", market: "dhamtari", commodity: "groundnut", variety: "Local", grade: "FAQ", arrivalDate: "21/02/2025", minPrice: "40.00", maxPrice: "50.00", modalPrice: "45.00" },
+
+            // Chhattisgarh - Durg
+            { state: "chhattisgarh", district: "durg", market: "durg", commodity: "soybean", variety: "Local", grade: "FAQ", arrivalDate: "21/02/2025", minPrice: "35.00", maxPrice: "45.00", modalPrice: "40.00" },
+            { state: "chhattisgarh", district: "durg", market: "patan", commodity: "onion", variety: "Local", grade: "Medium", arrivalDate: "21/02/2025", minPrice: "18.00", maxPrice: "25.00", modalPrice: "22.00" },
+            { state: "chhattisgarh", district: "durg", market: "bhilai", commodity: "green-chilli", variety: "Local", grade: "FAQ", arrivalDate: "21/02/2025", minPrice: "30.00", maxPrice: "40.00", modalPrice: "35.00" },
+
+            // Gujarat - Ahmedabad
+            { state: "gujarat", district: "ahmedabad", market: "ahmedabad", commodity: "cotton", variety: "Local", grade: "FAQ", arrivalDate: "21/02/2025", minPrice: "65.00", maxPrice: "75.00", modalPrice: "70.00" },
+            { state: "gujarat", district: "ahmedabad", market: "dholka", commodity: "wheat", variety: "Local", grade: "Medium", arrivalDate: "21/02/2025", minPrice: "20.00", maxPrice: "26.00", modalPrice: "23.00" },
+            { state: "gujarat", district: "ahmedabad", market: "sanand", commodity: "potato", variety: "Local", grade: "FAQ", arrivalDate: "21/02/2025", minPrice: "10.00", maxPrice: "15.00", modalPrice: "12.50" },
+
+            // Gujarat - Surat
+            { state: "gujarat", district: "surat", market: "surat", commodity: "sugarcane", variety: "Local", grade: "FAQ", arrivalDate: "21/02/2025", minPrice: "200.00", maxPrice: "250.00", modalPrice: "225.00" },
+            { state: "gujarat", district: "surat", market: "bardoli", commodity: "banana", variety: "Local", grade: "Large", arrivalDate: "21/02/2025", minPrice: "15.00", maxPrice: "20.00", modalPrice: "17.50" },
+            { state: "gujarat", district: "surat", market: "mandvi", commodity: "mango", variety: "Kesar", grade: "A", arrivalDate: "21/02/2025", minPrice: "50.00", maxPrice: "70.00", modalPrice: "60.00" }
+        ];
+
+        // Function to get commodity icon URL based on commodity name
+        function getCommodityIcon(commodity) {
+            const icons = {
+                "tomato": "https://img.icons8.com/color/24/000000/tomato.png",
+                "cabbage": "https://img.icons8.com/color/24/000000/cabbage.png",
+                "green-chilli": "https://img.icons8.com/color/24/000000/chili-pepper.png",
+                "gur-jaggery": "https://img.icons8.com/color/24/000000/jaggery.png",
+                "papaya": "https://img.icons8.com/color/24/000000/papaya.png",
+                "banana": "https://img.icons8.com/color/24/000000/banana.png",
+                "paddy": "https://img.icons8.com/color/24/000000/rice.png",
+                "cotton": "https://img.icons8.com/color/24/000000/cotton.png",
+                "maize": "https://img.icons8.com/color/24/000000/corn.png",
+                "potato": "https://img.icons8.com/color/24/000000/potato.png",
+                "onion": "https://img.icons8.com/color/24/000000/onion.png",
+                "brinjal": "https://img.icons8.com/color/24/000000/eggplant.png",
+                "carrot": "https://img.icons8.com/color/24/000000/carrot.png",
+                "cauliflower": "https://img.icons8.com/color/24/000000/cauliflower.png",
+                "beans": "https://img.icons8.com/color/24/000000/green-beans.png",
+                "mango": "https://img.icons8.com/color/24/000000/mango.png",
+                "wheat": "https://img.icons8.com/color/24/000000/wheat.png",
+                "sugarcane": "https://img.icons8.com/color/24/000000/sugarcane.png",
+                "soybean": "https://img.icons8.com/color/24/000000/soybean.png",
+                "groundnut": "https://img.icons8.com/color/24/000000/peanut.png",
+                "mustard": "https://img.icons8.com/color/24/000000/mustard.png",
+                "sunflower": "https://img.icons8.com/color/24/000000/sunflower.png",
+                "orange": "https://img.icons8.com/color/24/000000/orange.png",
+                "pineapple": "https://img.icons8.com/color/24/000000/pineapple.png",
+                "ginger": "https://img.icons8.com/color/24/000000/ginger.png",
+                "apple": "https://img.icons8.com/color/24/000000/apple.png",
+                "tea": "https://img.icons8.com/color/24/000000/tea.png",
+                "rice": "https://img.icons8.com/color/24/000000/rice-bowl.png"
+            };
+            return icons[commodity] || "https://img.icons8.com/color/24/000000/default.png";
+        }
+
+        // Function to filter and update table data
+        function updateTable() {
+            const search = document.getElementById('search').value.toLowerCase();
+            const state = document.getElementById('state').value;
+            const priceUnit = document.getElementById('priceUnit').value;
+
+            const filteredData = commodityData.filter(item => {
+                const matchesSearch = search === "" ||
+                    item.state.toLowerCase().includes(search) ||
+                    item.district.toLowerCase().includes(search) ||
+                    item.market.toLowerCase().includes(search) ||
+                    item.commodity.toLowerCase().includes(search) ||
+                    item.variety.toLowerCase().includes(search);
+                
+                const matchesState = state === "" || item.state === state;
+                const matchesPriceUnit = priceUnit === "" || priceUnit === "kg"; // Assuming all prices are in kg for simplicity
+
+                return matchesSearch && matchesState && matchesPriceUnit;
+            });
+
+            const tableBody = document.getElementById('table-body');
+            const noDataMessage = document.getElementById('no-data-message');
+            tableBody.innerHTML = '';
+            noDataMessage.style.display = 'none';
+
+            if (filteredData.length === 0) {
+                noDataMessage.style.display = 'block';
+            } else {
+                filteredData.forEach((item, index) => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${index + 1}</td>
+                        <td>${item.state.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}</td>
+                        <td>${item.district.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}</td>
+                        <td>${item.market.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}</td>
+                        <td><img src="${getCommodityIcon(item.commodity)}" alt="${item.commodity}" class="commodity-icon"> ${item.commodity.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}</td>
+                        <td>${item.variety}</td>
+                        <td>${item.grade}</td>
+                        <td>${item.arrivalDate}</td>
+                        <td>${item.minPrice}${priceUnit === "ton" ? " ton" : " kg"}</td>
+                        <td>${item.maxPrice}${priceUnit === "ton" ? " ton" : " kg"}</td>
+                        <td>${item.modalPrice}${priceUnit === "ton" ? " ton" : " kg"}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            }
+        }
+
+        // Add event listeners to filters
+        document.getElementById('search').addEventListener('input', updateTable);
+        document.getElementById('state').addEventListener('change', updateTable);
+        document.getElementById('priceUnit').addEventListener('change', updateTable);
+
+        // Initialize table with all data
+        updateTable();
+    </script>
+</body>
+</html>
